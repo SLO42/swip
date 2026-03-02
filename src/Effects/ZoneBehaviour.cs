@@ -28,11 +28,45 @@ namespace SWIP.Effects
         private float growTimer;
         private const float GROW_DURATION = 0.4f;
 
+        private static Texture2D _circleTexture;
+
         void Start()
         {
             timer = duration;
             growTimer = 0f;
             CreateVisual();
+        }
+
+        /// <summary>
+        /// Creates a soft circular gradient texture for gas particles.
+        /// Cached statically so it's only generated once across all zones.
+        /// </summary>
+        private static Texture2D GetCircleTexture()
+        {
+            if (_circleTexture != null) return _circleTexture;
+
+            const int size = 64;
+            _circleTexture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            float center = size / 2f;
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float dx = x - center;
+                    float dy = y - center;
+                    float dist = Mathf.Sqrt(dx * dx + dy * dy) / center;
+
+                    // Soft radial falloff — dense core that fades to wispy edges
+                    float alpha = Mathf.Clamp01(1f - dist);
+                    alpha = alpha * alpha; // quadratic falloff for softer edges
+                    _circleTexture.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
+                }
+            }
+
+            _circleTexture.Apply();
+            _circleTexture.wrapMode = TextureWrapMode.Clamp;
+            return _circleTexture;
         }
 
         private void CreateVisual()
@@ -44,21 +78,21 @@ namespace SWIP.Effects
             particles = particleObj.AddComponent<ParticleSystem>();
             particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
-            // Main module
+            // Main module — slower, longer-lived particles for a lingering gas feel
             var main = particles.main;
             main.loop = true;
-            main.startLifetime = new ParticleSystem.MinMaxCurve(1.0f, 1.8f);
-            main.startSpeed = new ParticleSystem.MinMaxCurve(0.1f, 0.4f);
-            main.startSize = new ParticleSystem.MinMaxCurve(radius * 0.4f, radius * 0.8f);
+            main.startLifetime = new ParticleSystem.MinMaxCurve(1.5f, 2.8f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.05f, 0.2f);
+            main.startSize = new ParticleSystem.MinMaxCurve(radius * 0.5f, radius * 1.0f);
             main.startColor = outerColor;
-            main.maxParticles = 40;
+            main.maxParticles = 50;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
-            main.gravityModifier = -0.03f;
+            main.gravityModifier = -0.02f;
             main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
 
-            // Emission
+            // Emission — denser for thicker gas
             var emission = particles.emission;
-            emission.rateOverTime = Mathf.Max(10f, radius * 5f);
+            emission.rateOverTime = Mathf.Max(12f, radius * 6f);
 
             // Shape — circle, starts at 0 and grows
             shape = particles.shape;
@@ -66,17 +100,27 @@ namespace SWIP.Effects
             shape.radius = 0.1f;
             shape.radiusThickness = 1f;
 
-            // Size over lifetime — grow then shrink for billowing smoke
+            // Noise — adds turbulence for swirling, organic gas movement
+            var noise = particles.noise;
+            noise.enabled = true;
+            noise.strength = new ParticleSystem.MinMaxCurve(0.3f, 0.6f);
+            noise.frequency = 0.5f;
+            noise.scrollSpeed = 0.3f;
+            noise.damping = true;
+            noise.octaveCount = 2;
+
+            // Size over lifetime — slow bloom then dissolve
             var sol = particles.sizeOverLifetime;
             sol.enabled = true;
             sol.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(
-                new Keyframe(0f, 0.3f),
-                new Keyframe(0.25f, 1f),
-                new Keyframe(0.7f, 0.9f),
-                new Keyframe(1f, 0.2f)
+                new Keyframe(0f, 0.2f),
+                new Keyframe(0.15f, 0.7f),
+                new Keyframe(0.5f, 1f),
+                new Keyframe(0.85f, 0.8f),
+                new Keyframe(1f, 0.1f)
             ));
 
-            // Color over lifetime — fade in, hold, fade out
+            // Color over lifetime — ghostly fade in/out with lingering mid-section
             var col = particles.colorOverLifetime;
             col.enabled = true;
             var gradient = new Gradient();
@@ -87,21 +131,24 @@ namespace SWIP.Effects
                 },
                 new GradientAlphaKey[] {
                     new GradientAlphaKey(0f, 0f),
-                    new GradientAlphaKey(0.8f, 0.15f),
-                    new GradientAlphaKey(0.7f, 0.6f),
+                    new GradientAlphaKey(0.6f, 0.1f),
+                    new GradientAlphaKey(0.5f, 0.5f),
+                    new GradientAlphaKey(0.3f, 0.8f),
                     new GradientAlphaKey(0f, 1f)
                 }
             );
             col.color = gradient;
 
-            // Rotation over lifetime — slow spin for organic look
+            // Rotation over lifetime — gentle drift for wispy gas
             var rot = particles.rotationOverLifetime;
             rot.enabled = true;
-            rot.z = new ParticleSystem.MinMaxCurve(-0.3f, 0.3f);
+            rot.z = new ParticleSystem.MinMaxCurve(-0.5f, 0.5f);
 
-            // Renderer
+            // Renderer — circular soft particle texture
             var renderer = particleObj.GetComponent<ParticleSystemRenderer>();
-            renderer.material = new Material(Shader.Find("Sprites/Default"));
+            var mat = new Material(Shader.Find("Sprites/Default"));
+            mat.mainTexture = GetCircleTexture();
+            renderer.material = mat;
             renderer.sortingOrder = 5;
             renderer.renderMode = ParticleSystemRenderMode.Billboard;
 

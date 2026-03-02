@@ -9,4 +9,5 @@ build/
 .claude/
 .claude-flow/
 .vscode/
+.swarm/
 CLAUDE.md

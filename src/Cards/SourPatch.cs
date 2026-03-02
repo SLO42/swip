@@ -26,7 +26,7 @@ namespace SWIP.Cards
         }
 
         protected override string GetTitle() => "Sour Patch";
-        protected override string GetDescription() => "Slow and painful. Just like his comebacks.";
+        protected override string GetDescription() => "Slow and painful. Just like ASourFruit's comebacks.";
 
         protected override CardInfoStat[] GetStats()
         {

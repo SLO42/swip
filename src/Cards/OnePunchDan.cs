@@ -25,7 +25,7 @@ namespace SWIP.Cards
             gun.projectileSize /= 1.8f;
         }
 
-        protected override string GetTitle() => "One Punch Dan";
+        protected override string GetTitle() => "One Punch";
         protected override string GetDescription() => "One shot. Make it count.";
 
         protected override CardInfoStat[] GetStats()

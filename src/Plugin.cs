@@ -1,4 +1,6 @@
 using BepInEx;
+using BepInEx.Bootstrap;
+using BepInEx.Configuration;
 using HarmonyLib;
 using UnboundLib.Cards;
 using UnityEngine;
@@ -9,7 +11,7 @@ namespace SWIP
     [BepInDependency("com.willis.rounds.unbound", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("pykess.rounds.plugins.moddingutils", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("root.rarity.lib", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInDependency("root.classes.manager.reborn", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("root.classes.manager.reborn", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(ModId, ModName, Version)]
     [BepInProcess("Rounds.exe")]
     public class Plugin : BaseUnityPlugin
@@ -17,6 +19,8 @@ namespace SWIP
         private const string ModId = "com.sam.rounds.swip";
         private const string ModName = "SWIP";
         private const string Version = "2.0.0";
+
+        public static bool UseClasses;
 
         void Awake()
         {
@@ -26,6 +30,24 @@ namespace SWIP
             RarityLib.Utils.RarityUtils.AddRarity("Epic", 0.08f, new Color(0.6f, 0.2f, 0.8f), new Color(0.4f, 0.1f, 0.5f));
             RarityLib.Utils.RarityUtils.AddRarity("Legendary", 0.05f, new Color(1f, 0.84f, 0f), new Color(0.8f, 0.6f, 0f));
             RarityLib.Utils.RarityUtils.AddRarity("Mythic", 0.02f, new Color(1f, 0.2f, 0.8f), new Color(0.6f, 0.1f, 0.5f));
+
+            bool cmrPresent = Chainloader.PluginInfos.ContainsKey("root.classes.manager.reborn");
+
+            var cfgUseClasses = Config.Bind(
+                "General",
+                "UseClasses",
+                cmrPresent,
+                "Enable class gating (requires ClassesManagerReborn). When false, all cards are a flat pool."
+            );
+
+            if (cfgUseClasses.Value && !cmrPresent)
+            {
+                Logger.LogWarning("[SWIP] UseClasses enabled but ClassesManagerReborn not installed. Forcing to false.");
+                cfgUseClasses.Value = false;
+            }
+
+            UseClasses = cfgUseClasses.Value;
+            Logger.LogInfo($"[SWIP] UseClasses = {UseClasses} (CMR present: {cmrPresent})");
         }
 
         void Start()

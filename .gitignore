@@ -1,0 +1,12 @@
+lib/
+bin/
+obj/
+build/
+*.zip
+*.user
+.vs/
+.mcp.json
+.claude/
+.claude-flow/
+.vscode/
+CLAUDE.md

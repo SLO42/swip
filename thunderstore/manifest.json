@@ -1,0 +1,12 @@
+{
+    "name": "SWIP",
+    "version_number": "1.0.0",
+    "website_url": "",
+    "description": "Sam's Wonderful Impressive Card Park - A custom card pack for ROUNDS",
+    "dependencies": [
+        "BepInEx-BepInExPack_ROUNDS-5.4.1901",
+        "willis81808-UnboundLib-3.2.14",
+        "Pykess-ModdingUtils-0.4.8",
+        "Root-RarityLib-1.2.8"
+    ]
+}

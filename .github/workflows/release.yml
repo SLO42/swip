@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Read version from manifest
+        id: version
+        run: |
+          VERSION=$(jq -r '.version_number' thunderstore/manifest.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Building version $VERSION"
+
+      - name: Verify tag matches manifest version
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          MANIFEST_VERSION="${{ steps.version.outputs.version }}"
+          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "ERROR: Tag version ($TAG_VERSION) does not match manifest version ($MANIFEST_VERSION)"
+            exit 1
+          fi
+
+      - name: Build
+        run: dotnet build src/SWIP.csproj -c Release
+
+      - name: Package for Thunderstore
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          mkdir -p package
+          cp src/bin/Release/netstandard2.1/SWIP.dll package/
+          cp thunderstore/manifest.json package/
+          cp thunderstore/README.md package/
+          cp thunderstore/icon.png package/
+          if [ -f thunderstore/CHANGELOG.md ]; then
+            cp thunderstore/CHANGELOG.md package/
+          fi
+          cd package
+          zip -r "../SWIP-${VERSION}.zip" .
+          cd ..
+          rm -rf package
+
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          # Extract the section for the current version from CHANGELOG.md
+          VERSION="${{ steps.version.outputs.version }}"
+          NOTES=$(awk "/^## \[${VERSION}\]/{found=1; next} /^## \[/{if(found) exit} found{print}" thunderstore/CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+            NOTES="Release v${VERSION}"
+          fi
+          # Write to file for the release body
+          echo "$NOTES" > release_notes.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release_notes.txt
+          files: SWIP-${{ steps.version.outputs.version }}.zip
+          generate_release_notes: false

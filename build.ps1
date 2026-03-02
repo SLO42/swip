@@ -1,7 +1,10 @@
 $ErrorActionPreference = "Stop"
 Push-Location $PSScriptRoot
 
-Write-Host "Building SWIP..."
+$manifest = Get-Content "thunderstore\manifest.json" | ConvertFrom-Json
+$version = $manifest.version_number
+Write-Host "Building SWIP v$version..."
+
 dotnet build src/SWIP.csproj -c Release
 if ($LASTEXITCODE -ne 0) { throw "Build failed" }
 
@@ -17,8 +20,9 @@ Copy-Item $dll "$buildDir\SWIP.dll"
 Copy-Item "thunderstore\manifest.json" $buildDir
 Copy-Item "thunderstore\README.md" $buildDir
 Copy-Item "thunderstore\icon.png" $buildDir
+if (Test-Path "thunderstore\CHANGELOG.md") { Copy-Item "thunderstore\CHANGELOG.md" $buildDir }
 
-$zipPath = "SWIP-1.0.0.zip"
+$zipPath = "SWIP-$version.zip"
 if (Test-Path $zipPath) { Remove-Item $zipPath }
 Compress-Archive -Path "$buildDir\*" -DestinationPath $zipPath
 

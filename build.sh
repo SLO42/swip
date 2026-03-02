@@ -4,7 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "Building SWIP..."
+VERSION=$(jq -r '.version_number' thunderstore/manifest.json)
+echo "Building SWIP v${VERSION}..."
 dotnet build src/SWIP.csproj -c Release
 
 DLL="src/bin/Release/netstandard2.1/SWIP.dll"
@@ -19,10 +20,11 @@ cp "$DLL" build/SWIP.dll
 cp thunderstore/manifest.json build/
 cp thunderstore/README.md build/
 cp thunderstore/icon.png build/
+[ -f thunderstore/CHANGELOG.md ] && cp thunderstore/CHANGELOG.md build/
 
 cd build
-zip -r ../SWIP-1.0.0.zip manifest.json README.md icon.png SWIP.dll
+zip -r "../SWIP-${VERSION}.zip" .
 cd ..
 rm -rf build
 
-echo "Done! Package: SWIP-1.0.0.zip"
+echo "Done! Package: SWIP-${VERSION}.zip"

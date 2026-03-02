@@ -58,26 +58,12 @@ if [ ! -f "$DLL" ]; then
   exit 1
 fi
 
-# --- Package ---
-echo "Packaging for Thunderstore..."
-mkdir -p build
-cp "$DLL" build/SWIP.dll
-cp "$MANIFEST" build/
-cp thunderstore/README.md build/
-cp thunderstore/icon.png build/
-[ -f "$CHANGELOG" ] && cp "$CHANGELOG" build/
+# --- Copy built DLL into thunderstore/ for CI ---
+cp "$DLL" thunderstore/SWIP.dll
+echo "Copied SWIP.dll to thunderstore/"
 
-cd build
-zip -r "../SWIP-${NEW_VERSION}.zip" .
-cd ..
-rm -rf build
-
-echo ""
-echo "Package: SWIP-${NEW_VERSION}.zip"
 echo ""
 echo "Next steps:"
 echo "  1. Review and edit $CHANGELOG with your changes"
 echo "  2. git add -A && git commit -m \"release: v${NEW_VERSION}\""
-echo "  3. git tag v${NEW_VERSION}"
-echo "  4. git push origin master --tags  (triggers GitHub Actions release)"
-echo "  5. Upload SWIP-${NEW_VERSION}.zip to https://thunderstore.io/package/create/"
+echo "  3. Push / merge to main — CI will package and create the GitHub release"

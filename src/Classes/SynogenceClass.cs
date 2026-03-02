@@ -35,6 +35,8 @@ namespace SWIP.Classes
 
         public override IEnumerator Init()
         {
+            if (!Plugin.UseClasses) yield break;
+
             while (!CardRegistry.TryGet("Synogence Entry", out _))
             {
                 yield return null;

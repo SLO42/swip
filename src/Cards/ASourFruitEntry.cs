@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SWIP.Cards
 {
-    public class TheAlgorithm : CustomCard
+    public class ASourFruitEntry : CustomCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
@@ -11,31 +11,28 @@ namespace SWIP.Cards
 
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            gun.spread *= 0.05f;
-            gun.projectileSpeed *= 1.8f;
-            gun.gravity *= 0.1f;
-            gun.damage *= 0.85f;
+            gun.reflects += 2;
+            gun.projectileSpeed *= 1.1f;
+            gun.damage *= 1.1f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            gun.spread /= 0.05f;
-            gun.projectileSpeed /= 1.8f;
-            gun.gravity /= 0.1f;
-            gun.damage /= 0.85f;
+            gun.reflects -= 2;
+            gun.projectileSpeed /= 1.1f;
+            gun.damage /= 1.1f;
         }
 
-        protected override string GetTitle() => "The Algorithm";
-        protected override string GetDescription() => "Synogence calculated this. Probably.";
+        protected override string GetTitle() => "ASourFruit Entry";
+        protected override string GetDescription() => "Ricochet chaos. Your bullets bounce, grow, and explode.";
 
         protected override CardInfoStat[] GetStats()
         {
             return new CardInfoStat[]
             {
-                new CardInfoStat { positive = true, stat = "Spread", amount = "-95%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
-                new CardInfoStat { positive = true, stat = "Bullet Speed", amount = "+80%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
-                new CardInfoStat { positive = true, stat = "Bullet Gravity", amount = "-90%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
-                new CardInfoStat { positive = false, stat = "Damage", amount = "-15%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
+                new CardInfoStat { positive = true, stat = "Bounces", amount = "+2", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
+                new CardInfoStat { positive = true, stat = "Bullet Speed", amount = "+10%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
+                new CardInfoStat { positive = true, stat = "Damage", amount = "+10%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
             };
         }
 

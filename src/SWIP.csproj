@@ -52,6 +52,10 @@
       <HintPath>..\lib\UnityEngine.ParticleSystemModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="ClassesManagerReborn">
+      <HintPath>..\lib\ClassesManagerReborn.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>

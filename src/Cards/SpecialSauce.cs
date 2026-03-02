@@ -28,7 +28,6 @@ namespace SWIP.Cards
             characterStats.secondsToTakeDamageOver += 1f;
             gun.numberOfProjectiles += 1;
             gun.projectileSize *= 1.1f;
-            characterStats.respawns += 1;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -50,18 +49,16 @@ namespace SWIP.Cards
             characterStats.secondsToTakeDamageOver -= 1f;
             gun.numberOfProjectiles -= 1;
             gun.projectileSize /= 1.1f;
-            characterStats.respawns -= 1;
         }
 
         protected override string GetTitle() => "Special Sauce";
-        protected override string GetDescription() => "A little bit of everything. Sam's signature.";
+        protected override string GetDescription() => "A little bit of everything. SaucyEnchiladas' signature.";
 
         protected override CardInfoStat[] GetStats()
         {
             return new CardInfoStat[]
             {
                 new CardInfoStat { positive = true, stat = "Everything", amount = "+10-20%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
-                new CardInfoStat { positive = true, stat = "Extra Life", amount = "+1", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
                 new CardInfoStat { positive = true, stat = "Regen", amount = "+2", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
                 new CardInfoStat { positive = true, stat = "Life Steal", amount = "+10%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
             };

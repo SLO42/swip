@@ -178,3 +178,7 @@ Bullets Grow +50% on Bounce, +3 Bounces, -30% Damage, -20% Bullet Speed
 ## Installation
 
 Install with r2modman or Thunderstore Mod Manager. Requires BepInEx, UnboundLib, ModdingUtils, and RarityLib.
+
+## Credits
+
+Development assisted by [Claude Code](https://github.com/anthropics/claude-code) with [Claude Flow V3](https://github.com/ruvnet/claude-flow) orchestration by [rUv](https://github.com/ruvnet).

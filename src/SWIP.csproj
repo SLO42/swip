@@ -56,6 +56,10 @@
       <HintPath>..\lib\ClassesManagerReborn.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\lib\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>

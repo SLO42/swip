@@ -2,7 +2,9 @@ using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Configuration;
 using HarmonyLib;
+using UnboundLib;
 using UnboundLib.Cards;
+using UnboundLib.Utils.UI;
 using UnityEngine;
 using SWIP.Cards;
 
@@ -21,6 +23,8 @@ namespace SWIP
         private const string Version = "2.0.0";
 
         public static bool UseClasses;
+        private static ConfigEntry<bool> cfgUseClasses;
+        private static bool cmrPresent;
 
         void Awake()
         {
@@ -31,9 +35,9 @@ namespace SWIP
             RarityLib.Utils.RarityUtils.AddRarity("Legendary", 0.05f, new Color(1f, 0.84f, 0f), new Color(0.8f, 0.6f, 0f));
             RarityLib.Utils.RarityUtils.AddRarity("Mythic", 0.02f, new Color(1f, 0.2f, 0.8f), new Color(0.6f, 0.1f, 0.5f));
 
-            bool cmrPresent = Chainloader.PluginInfos.ContainsKey("root.classes.manager.reborn");
+            cmrPresent = Chainloader.PluginInfos.ContainsKey("root.classes.manager.reborn");
 
-            var cfgUseClasses = Config.Bind(
+            cfgUseClasses = Config.Bind(
                 "General",
                 "UseClasses",
                 cmrPresent,
@@ -52,6 +56,21 @@ namespace SWIP
 
         void Start()
         {
+            Unbound.RegisterClientSideMod(ModId);
+            Unbound.RegisterMenu(ModName, () => { }, menu =>
+            {
+                MenuHandler.CreateToggle(UseClasses, "Use Classes (requires restart)", menu, value =>
+                {
+                    if (value && !cmrPresent)
+                    {
+                        Logger.LogWarning("[SWIP] ClassesManagerReborn not installed — can't enable classes.");
+                        return;
+                    }
+                    UseClasses = value;
+                    cfgUseClasses.Value = value;
+                });
+            }, null, false);
+
             // === Entry Cards (register first) ===
             CustomCard.BuildCard<SaucyEnchiladasEntry>(ci => CardRegistry.Register("SaucyEnchiladas Entry", ci));
             CustomCard.BuildCard<ASourFruitEntry>(ci => CardRegistry.Register("ASourFruit Entry", ci));

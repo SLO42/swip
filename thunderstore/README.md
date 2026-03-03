@@ -1,6 +1,6 @@
 # SWIP - Sam's Wonderful Impressive Card Park
 
-A custom card pack for ROUNDS featuring 99 cards across 3 mechanically distinct classes powered by ClassesManagerReborn. Pick a class entry card to unlock its full card pool, or stay unclassed with 30 always-available cards.
+A custom card pack for ROUNDS featuring 148 cards across 3 mechanically distinct classes powered by ClassesManagerReborn. Pick a class entry card to unlock its full card pool, or stay unclassed with 79 always-available cards including a massive silly/chaos pack.
 
 ## Classes
 
@@ -112,7 +112,7 @@ Pick the **Synogence Entry** card to unlock 22 class-gated cards focused on burn
 | Absolute Zero | Legendary | Freeze aura, extreme slow |
 | Supernova | Legendary | Death explosion + mass burn |
 
-### Unclassed Cards (30)
+### Unclassed Cards (79)
 
 | Card | Rarity | Description |
 |------|--------|-------------|
@@ -130,14 +130,14 @@ Pick the **Synogence Entry** card to unlock 22 class-gated cards focused on burn
 | Glass Cannon | Uncommon | High damage, low HP |
 | Couch Cushion Fort | Uncommon | Block-focused defense |
 | Wild Card | Uncommon | Extra shot at random angle |
-| Smite | Uncommon | Orbital strike on block |
+| Smite | Uncommon | Holy golden beam from above on hit |
 | Come Here Bro | Rare | Gravity aura |
-| Scorched Sky | Rare | Orbital strike on block |
+| Scorched Sky | Rare | Rain of fire on bullet hit |
 | Mom Said My Turn | Rare | 3-5 random cards |
 | Brotherly Love | Rare | Rotates all loadouts |
 | Divine Judgment | Rare | Holy laser |
 | Carpet Bomb | Rare | 5 homing missiles |
-| Satellite Uplink | Rare | Orbital strike on block |
+| Satellite Uplink | Rare | Red defensive laser from above on block |
 | Drone Swarm | Rare | 3 homing missiles |
 | Underdog | Epic | Lower HP = more damage |
 | Momentum | Epic | Speed scales damage |
@@ -146,6 +146,112 @@ Pick the **Synogence Entry** card to unlock 22 class-gated cards focused on burn
 | Last Stand | Legendary | Below 25% HP: huge buffs |
 | Nullifier | Legendary | Aura negates burn/freeze/poison |
 | The Final Boss | Mythic | The ultimate card |
+
+#### Silly/Chaos Cards (v2.3.0)
+
+**Radial Shot & Bullet Adders**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Radial Spread | Uncommon | Equal-angle bullet distribution |
+| Bullet Storm | Uncommon | +5 bullets, +spread, -30% damage |
+| Bullet Hail | Rare | +10 bullets, +spread, -50% damage |
+| Bullet Flood | Epic | +25 bullets, +spread, -70% damage |
+
+**Clip Dump**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Clip Dump | Uncommon | Dump entire clip on trigger, +3 ammo |
+| Clip Purge | Rare | Dump entire clip on trigger, +8 ammo |
+| Clip Apocalypse | Epic | Dump entire clip on trigger, +15 ammo |
+
+**Slow Cards**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Slow Drip | Common | 10% slow on hit for 2s |
+| Slow Pour | Uncommon | 25% slow on hit for 3s |
+| Slow Tide | Rare | 50% slow on hit for 4s |
+
+**Bounce Count Cards** (all include screen-edge bouncing)
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Bounce x2 | Common | +2 bounces |
+| Bounce x5 | Common | +5 bounces, -10% damage |
+| Bounce x10 | Uncommon | +10 bounces, -20% damage |
+| Bounce x25 | Rare | +25 bounces, -30% damage |
+| Bounce x50 | Epic | +50 bounces, -40% damage, -20% speed |
+| Bounce x100 | Legendary | +100 bounces, -50% damage, -30% speed |
+
+**Bounce Modifier Cards**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Ricochet Roulette | Uncommon | Speed up + random size per bounce |
+| Featherfall | Uncommon | -30% gravity per bounce |
+| Shockwave Bounce | Uncommon | Push enemies away on bounce |
+| Ice Ricochet | Uncommon | Slow enemies near bounce point |
+| Chaos Ricochet | Rare | Swap damage/speed on bounce |
+| Vortex Bounce | Rare | Pull enemies toward bounce point |
+| Scorching Bounce | Rare | Burn near bounce, escalates per bounce |
+
+**Stat Boost Cards**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Wide Spread | Common | +0.5 spread, +2 bullets |
+| Bullet Speed+ | Common | +50% projectile speed |
+| Rapid Fire | Common | +40% fire rate, -20% damage |
+
+**Ammo/Reload Cards**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Quick Draw | Rare | Near-instant reload |
+| Infinite Ammo | Legendary | +999 ammo, -40% damage |
+
+**Unique Mechanic Cards**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Speed Demon | Uncommon | Swap movespeed for damage |
+| Double Down | Uncommon | 50/50 double or halve weak stats |
+| Snake Rain | Rare | Spawn homing snakes when hit |
+| Chaos Stats | Rare | Randomize 2 stat pairs |
+| Rising Tide | Rare | Boost above-baseline stats +20% |
+| Bullet Warp | Epic | Teleport to bullet hit location |
+| All In | Epic | Randomize all stats +/-50% |
+| Effect Amplifier | Epic | Boost all effect sizes x1.5 |
+
+**Card Manipulation Cards**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Card Thief | Rare | Force others to swap random cards |
+| High Stakes | Rare | Gamble to steal/lose stats vs others |
+| New Hand | Epic | Replace your hand with random cards |
+| Shuffle & Deal | Epic | Others shuffle and redraw |
+| Stat Leech | Epic | Siphon better stats from other players |
+| All-In-One | Legendary | All cards become copies of 1 random |
+| Card Tornado | Legendary | All players' cards pooled and redistributed |
+| Copycat | Legendary | Clone any card for entire hand |
+
+**Custom Projectile Cards**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Angry Birds | Epic | Homing bird projectiles with swooping arcs |
+| Squid Ink | Epic | Homing squids with sinusoidal swim + ink cloud slow |
+
+**On-Block/On-Hit Spawner Cards**
+
+| Card | Rarity | Description |
+|------|--------|-------------|
+| Nacho Block | Uncommon | Spawn nachos on block (heal allies, damage enemies) |
+| Lemon Drop | Rare | Blinding lemon zones on hit/bounce |
+| Tortilla Shield | Rare | Invulnerable wrap on block (3s, immobile) |
 
 ## Installation
 

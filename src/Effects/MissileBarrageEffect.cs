@@ -115,14 +115,17 @@ namespace SWIP.Effects
         public float explosionForce = 1500f;
         public float steerStrength = 10f;
         public float hitRadius = 1.5f;
+        public float graceTime = 0.3f;
 
         private float timer;
+        private float graceTimer;
         private Rigidbody2D rb;
         private LineRenderer lr;
 
         void Start()
         {
             timer = lifetime;
+            graceTimer = graceTime;
             rb = GetComponent<Rigidbody2D>();
             lr = GetComponent<LineRenderer>();
 
@@ -135,6 +138,7 @@ namespace SWIP.Effects
         void FixedUpdate()
         {
             timer -= Time.fixedDeltaTime;
+            if (graceTimer > 0f) graceTimer -= Time.fixedDeltaTime;
             if (timer <= 0f)
             {
                 Destroy(gameObject);
@@ -170,8 +174,7 @@ namespace SWIP.Effects
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            // Ignore collision with the owner
-            if (owner != null && collision.gameObject.GetComponentInParent<Player>() == owner) return;
+            if (graceTimer > 0f) return;
 
             Destroy(gameObject);
         }

@@ -68,6 +68,10 @@ namespace SWIP.Effects
                 var rb = missileObj.AddComponent<Rigidbody2D>();
                 rb.gravityScale = 0f;
                 rb.mass = 0.1f;
+                rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+                var col = missileObj.AddComponent<CircleCollider2D>();
+                col.radius = 0.15f;
 
                 // Visual: small line as missile body
                 var lr = missileObj.AddComponent<LineRenderer>();
@@ -111,14 +115,18 @@ namespace SWIP.Effects
         public float explosionForce = 1500f;
         public float steerStrength = 10f;
         public float hitRadius = 1.5f;
+        public float graceTime = 0.3f;
 
         private float timer;
+        private float graceTimer;
+        private bool exploded;
         private Rigidbody2D rb;
         private LineRenderer lr;
 
         void Start()
         {
             timer = lifetime;
+            graceTimer = graceTime;
             rb = GetComponent<Rigidbody2D>();
             lr = GetComponent<LineRenderer>();
 
@@ -131,6 +139,7 @@ namespace SWIP.Effects
         void FixedUpdate()
         {
             timer -= Time.fixedDeltaTime;
+            if (graceTimer > 0f) graceTimer -= Time.fixedDeltaTime;
             if (timer <= 0f)
             {
                 Destroy(gameObject);
@@ -154,14 +163,54 @@ namespace SWIP.Effects
             float dist = Vector2.Distance(transform.position, target.transform.position);
             if (dist < hitRadius)
             {
-                var exp = gameObject.AddComponent<Explosion>();
-                exp.auto = true;
-                exp.damage = damage;
-                exp.range = explosionRange;
-                exp.force = explosionForce;
-
-                Destroy(gameObject, 0.1f);
+                Explode();
             }
+        }
+
+        void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (graceTimer > 0f) return;
+
+            Explode();
+        }
+
+        private void Explode()
+        {
+            if (exploded) return;
+            exploded = true;
+
+            Vector3 pos = transform.position;
+
+            // Spawn explosion on a separate GO so it survives missile destruction
+            var expObj = new GameObject("MissileExplosion");
+            expObj.transform.position = pos;
+            var exp = expObj.AddComponent<Explosion>();
+            exp.auto = true;
+            exp.damage = damage;
+            exp.range = explosionRange;
+            exp.force = explosionForce;
+
+            // Spawn cloud/gas zones from the owner's cloud effect cards (stacks)
+            if (owner != null)
+            {
+                foreach (var spawner in owner.GetComponentsInChildren<CloudEffectSpawner>())
+                {
+                    var cloudObj = new GameObject("Zone");
+                    cloudObj.transform.position = pos;
+                    var zone = cloudObj.AddComponent<ZoneBehaviour>();
+                    zone.radius = spawner.cloudRadius;
+                    zone.duration = spawner.cloudDuration;
+                    zone.damagePerSecond = spawner.damagePerSecond;
+                    zone.healPerSecond = spawner.healPerSecond;
+                    zone.slowAmount = spawner.slowAmount;
+                    zone.outerColor = spawner.outerColor;
+                    zone.innerColor = spawner.innerColor;
+                    zone.owner = owner;
+                    zone.affectsOwner = spawner.affectsOwner;
+                }
+            }
+
+            Destroy(gameObject);
         }
 
         private Player FindClosestEnemy()
@@ -185,4 +234,5 @@ namespace SWIP.Effects
             return closest;
         }
     }
+
 }

@@ -151,6 +151,12 @@ Pick the **Synogence Entry** card to unlock 22 class-gated cards focused on burn
 
 Install with r2modman or Thunderstore Mod Manager. Requires BepInEx, UnboundLib, ModdingUtils, RarityLib, and ClassesManagerReborn.
 
+## Bug Reports & Issues
+
+Found a bug or something not working right? Submit an issue on GitHub: [github.com/SLO42/swip/issues](https://github.com/SLO42/swip/issues)
+
+Please include your mod list, what happened, and what you expected to happen. Screenshots or clips help a lot.
+
 ## Credits
 
 Development assisted by [Claude Code](https://github.com/anthropics/claude-code) with [Claude Flow V3](https://github.com/ruvnet/claude-flow) orchestration by [rUv](https://github.com/ruvnet) modified and tailored for C# development for Rounds Modding by [SL042](https://github.com/SLO42).

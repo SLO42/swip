@@ -179,53 +179,16 @@ namespace SWIP.Effects
             if (exploded) return;
             exploded = true;
 
-            // Kill physics immediately so nothing flings around
-            var col = GetComponent<CircleCollider2D>();
-            if (col != null) col.enabled = false;
-            if (rb != null) { rb.velocity = Vector2.zero; rb.isKinematic = true; }
-            if (lr != null) lr.enabled = false;
+            Vector3 pos = transform.position;
 
-            // AoE damage + knockback to enemies in range
-            Vector2 pos = transform.position;
-            Collider2D[] hits = Physics2D.OverlapCircleAll(pos, explosionRange);
-            foreach (var hit in hits)
-            {
-                var player = hit.GetComponentInParent<Player>();
-                if (player == null || player.data.dead) continue;
-                if (owner != null && player.teamID == owner.teamID) continue;
-
-                Vector2 dir = ((Vector2)player.transform.position - pos).normalized;
-                player.data.healthHandler.TakeDamage(dir * damage, pos);
-
-                var playerRb = player.GetComponent<Rigidbody2D>();
-                if (playerRb != null)
-                {
-                    playerRb.AddForce(dir * explosionForce);
-                }
-            }
-
-            // Visual: expanding flash ring
-            var flashObj = new GameObject("ExplosionFlash");
-            flashObj.transform.position = transform.position;
-            var flash = flashObj.AddComponent<LineRenderer>();
-            flash.useWorldSpace = true;
-            flash.loop = true;
-            flash.widthMultiplier = 0.2f;
-            flash.material = new Material(Shader.Find("Sprites/Default"));
-            flash.startColor = new Color(1f, 0.6f, 0.1f, 1f);
-            flash.endColor = new Color(1f, 0.3f, 0f, 0.8f);
-            flash.sortingOrder = 6;
-            int segments = 24;
-            flash.positionCount = segments;
-            for (int i = 0; i < segments; i++)
-            {
-                float angle = (float)i / segments * Mathf.PI * 2f;
-                float r = explosionRange * 0.3f;
-                flash.SetPosition(i, (Vector3)pos + new Vector3(Mathf.Cos(angle) * r, Mathf.Sin(angle) * r, 0f));
-            }
-            var flashAnim = flashObj.AddComponent<ExplosionFlashAnim>();
-            flashAnim.center = pos;
-            flashAnim.maxRadius = explosionRange;
+            // Spawn explosion on a separate GO so it survives missile destruction
+            var expObj = new GameObject("MissileExplosion");
+            expObj.transform.position = pos;
+            var exp = expObj.AddComponent<Explosion>();
+            exp.auto = true;
+            exp.damage = damage;
+            exp.range = explosionRange;
+            exp.force = explosionForce;
 
             // Spawn cloud/gas zones from the owner's cloud effect cards (stacks)
             if (owner != null)
@@ -233,7 +196,7 @@ namespace SWIP.Effects
                 foreach (var spawner in owner.GetComponentsInChildren<CloudEffectSpawner>())
                 {
                     var cloudObj = new GameObject("Zone");
-                    cloudObj.transform.position = transform.position;
+                    cloudObj.transform.position = pos;
                     var zone = cloudObj.AddComponent<ZoneBehaviour>();
                     zone.radius = spawner.cloudRadius;
                     zone.duration = spawner.cloudDuration;
@@ -272,45 +235,4 @@ namespace SWIP.Effects
         }
     }
 
-    public class ExplosionFlashAnim : MonoBehaviour
-    {
-        public Vector2 center;
-        public float maxRadius = 2.5f;
-        public float duration = 0.25f;
-
-        private float timer;
-        private LineRenderer lr;
-
-        void Start()
-        {
-            timer = 0f;
-            lr = GetComponent<LineRenderer>();
-        }
-
-        void Update()
-        {
-            timer += Time.deltaTime;
-            float t = timer / duration;
-
-            if (t >= 1f)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            // Expand ring and fade out
-            float r = Mathf.Lerp(maxRadius * 0.3f, maxRadius, t);
-            float alpha = 1f - t;
-            lr.startColor = new Color(1f, 0.6f, 0.1f, alpha);
-            lr.endColor = new Color(1f, 0.3f, 0f, alpha * 0.8f);
-            lr.widthMultiplier = 0.2f * (1f - t * 0.5f);
-
-            int segments = lr.positionCount;
-            for (int i = 0; i < segments; i++)
-            {
-                float angle = (float)i / segments * Mathf.PI * 2f;
-                lr.SetPosition(i, (Vector3)center + new Vector3(Mathf.Cos(angle) * r, Mathf.Sin(angle) * r, 0f));
-            }
-        }
-    }
 }

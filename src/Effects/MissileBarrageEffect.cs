@@ -68,6 +68,10 @@ namespace SWIP.Effects
                 var rb = missileObj.AddComponent<Rigidbody2D>();
                 rb.gravityScale = 0f;
                 rb.mass = 0.1f;
+                rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+                var col = missileObj.AddComponent<CircleCollider2D>();
+                col.radius = 0.15f;
 
                 // Visual: small line as missile body
                 var lr = missileObj.AddComponent<LineRenderer>();
@@ -162,6 +166,14 @@ namespace SWIP.Effects
 
                 Destroy(gameObject, 0.1f);
             }
+        }
+
+        void OnCollisionEnter2D(Collision2D collision)
+        {
+            // Ignore collision with the owner
+            if (owner != null && collision.gameObject.GetComponentInParent<Player>() == owner) return;
+
+            Destroy(gameObject);
         }
 
         private Player FindClosestEnemy()

@@ -162,13 +162,7 @@ namespace SWIP.Effects
             float dist = Vector2.Distance(transform.position, target.transform.position);
             if (dist < hitRadius)
             {
-                var exp = gameObject.AddComponent<Explosion>();
-                exp.auto = true;
-                exp.damage = damage;
-                exp.range = explosionRange;
-                exp.force = explosionForce;
-
-                Destroy(gameObject, 0.1f);
+                Explode();
             }
         }
 
@@ -176,7 +170,38 @@ namespace SWIP.Effects
         {
             if (graceTimer > 0f) return;
 
-            Destroy(gameObject);
+            Explode();
+        }
+
+        private void Explode()
+        {
+            var exp = gameObject.AddComponent<Explosion>();
+            exp.auto = true;
+            exp.damage = damage;
+            exp.range = explosionRange;
+            exp.force = explosionForce;
+
+            // Spawn cloud/gas zones from the owner's cloud effect cards (stacks)
+            if (owner != null)
+            {
+                foreach (var spawner in owner.GetComponentsInChildren<CloudEffectSpawner>())
+                {
+                    var cloudObj = new GameObject("Zone");
+                    cloudObj.transform.position = transform.position;
+                    var zone = cloudObj.AddComponent<ZoneBehaviour>();
+                    zone.radius = spawner.cloudRadius;
+                    zone.duration = spawner.cloudDuration;
+                    zone.damagePerSecond = spawner.damagePerSecond;
+                    zone.healPerSecond = spawner.healPerSecond;
+                    zone.slowAmount = spawner.slowAmount;
+                    zone.outerColor = spawner.outerColor;
+                    zone.innerColor = spawner.innerColor;
+                    zone.owner = owner;
+                    zone.affectsOwner = spawner.affectsOwner;
+                }
+            }
+
+            Destroy(gameObject, 0.1f);
         }
 
         private Player FindClosestEnemy()

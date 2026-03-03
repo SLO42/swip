@@ -72,6 +72,7 @@ namespace SWIP.Effects
 
                 var col = missileObj.AddComponent<CircleCollider2D>();
                 col.radius = 0.15f;
+                col.isTrigger = true;
 
                 // Visual: small line as missile body
                 var lr = missileObj.AddComponent<LineRenderer>();
@@ -142,13 +143,14 @@ namespace SWIP.Effects
             if (graceTimer > 0f) graceTimer -= Time.fixedDeltaTime;
             if (timer <= 0f)
             {
-                Destroy(gameObject);
+                Explode();
                 return;
             }
 
             Player target = FindClosestEnemy();
             if (target == null || rb == null) return;
 
+            // Steer toward target center
             Vector2 dir = ((Vector2)target.transform.position - (Vector2)transform.position).normalized;
             rb.velocity = Vector2.Lerp(rb.velocity.normalized, dir, Time.fixedDeltaTime * steerStrength) * speed;
 
@@ -159,7 +161,7 @@ namespace SWIP.Effects
                 lr.SetPosition(1, tail);
             }
 
-            // Proximity-based hit detection (more reliable than OnCollisionEnter2D)
+            // Proximity hit — check distance to target center directly
             float dist = Vector2.Distance(transform.position, target.transform.position);
             if (dist < hitRadius)
             {
@@ -167,9 +169,16 @@ namespace SWIP.Effects
             }
         }
 
-        void OnCollisionEnter2D(Collision2D collision)
+        void OnTriggerEnter2D(Collider2D other)
         {
             if (graceTimer > 0f) return;
+
+            // Ignore other missiles
+            if (other.GetComponent<MissileHomingBehaviour>() != null) return;
+
+            // Ignore owner
+            var player = other.GetComponentInParent<Player>();
+            if (player != null && owner != null && player.teamID == owner.teamID) return;
 
             Explode();
         }

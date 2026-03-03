@@ -180,6 +180,9 @@ namespace SWIP
             CustomCard.BuildCard<Nullifier>(ci => CardRegistry.Register("Nullifier", ci));
             CustomCard.BuildCard<TheFinalBoss>(ci => CardRegistry.Register("The Final Boss", ci));
 
+            // === Debug/Test Cards ===
+            CustomCard.BuildCard<OrbitalTest>(ci => CardRegistry.Register("Orbital Test", ci));
+
             // Class handlers (SaucyEnchiladasClass, ASourFruitClass, SynogenceClass) are
             // auto-discovered by ClassesManagerReborn via assembly reflection.
 

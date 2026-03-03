@@ -1,0 +1,79 @@
+name: Bug Report
+description: Something broken or not working as expected
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug clearly. What did you see?
+      placeholder: "e.g. Drone Swarm missiles pass through walls and don't explode"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should have happened?
+      placeholder: "e.g. Missiles should collide with walls and explode"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: How can we trigger this bug?
+      placeholder: |
+        1. Pick Drone Swarm card
+        2. Shoot toward a wall
+        3. Missiles fly through it
+    validations:
+      required: true
+
+  - type: input
+    id: swip-version
+    attributes:
+      label: SWIP version
+      placeholder: "e.g. 2.1.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: mod-list
+    attributes:
+      label: Installed mods
+      description: List your other installed mods (or paste your r2modman/Thunderstore profile export)
+      placeholder: |
+        UnboundLib 3.2.14
+        ModdingUtils 0.4.8
+        RarityLib 1.3.0
+        ClassesManagerReborn 1.5.5
+    validations:
+      required: true
+
+  - type: textarea
+    id: cards
+    attributes:
+      label: Cards held when the bug occurred
+      description: Which cards did you have when this happened? Helps identify card interactions.
+      placeholder: "e.g. Drone Swarm, Smoke Bomb, Rubber Bullets"
+    validations:
+      required: false
+
+  - type: textarea
+    id: log
+    attributes:
+      label: BepInEx log (if available)
+      description: Paste relevant lines from `BepInEx/LogOutput.log`. Look for lines containing `[SWIP]` or `[Error]`.
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or clips
+      description: Drag and drop any screenshots or video clips that show the issue.
+    validations:
+      required: false

@@ -2,6 +2,89 @@
 
 All notable changes to SWIP (Sam's Wonderful Impressive Card Park) will be documented in this file.
 
+## [2.3.0] - 2026-03-03
+
+### Added — Silly/Chaos Card Pack (~50 new unclassed cards)
+
+**Radial Shot & Bullet Adders (4):**
+- Radial Spread (Uncommon), Bullet Storm (Uncommon), Bullet Hail (Rare), Bullet Flood (Epic)
+
+**Clip Dump (3):**
+- Clip Dump (Uncommon), Clip Purge (Rare), Clip Apocalypse (Epic)
+
+**Slow Cards (3):**
+- Slow Drip (Common), Slow Pour (Uncommon), Slow Tide (Rare)
+
+**Bounce Count Cards (6):**
+- Bounce x2 (Common), Bounce x5 (Common), Bounce x10 (Uncommon), Bounce x25 (Rare), Bounce x50 (Epic), Bounce x100 (Legendary)
+- All include screen-edge bouncing via ScreenBounceEffect
+
+**Bounce Modifier Cards (7):**
+- Ricochet Roulette (Uncommon), Featherfall (Uncommon), Shockwave Bounce (Uncommon), Ice Ricochet (Uncommon)
+- Chaos Ricochet (Rare), Vortex Bounce (Rare), Scorching Bounce (Rare)
+
+**Stat Boost Cards (3):**
+- Wide Spread (Common), Bullet Speed+ (Common), Rapid Fire (Common)
+
+**Ammo/Reload Cards (2):**
+- Infinite Ammo (Legendary), Quick Draw (Rare)
+
+**Unique Mechanic Cards (8):**
+- Bullet Warp (Epic) — teleport to bullet hit location
+- Snake Rain (Rare) — homing snakes spawn when hit
+- Speed Demon (Uncommon) — swap movespeed for damage
+- Chaos Stats (Rare) — randomize 2 stat pairs
+- Rising Tide (Rare) — boost above-baseline stats +20%
+- Double Down (Uncommon) — 50/50 double or halve weak stats
+- All In (Epic) — randomize all stats +/-50%
+- Effect Amplifier (Epic) — boost all effect sizes x1.5
+
+**Card Manipulation Cards (8):**
+- New Hand (Epic) — replace own hand with random cards
+- All-In-One (Legendary) — all cards become copies of 1 random
+- Card Thief (Rare) — force others to swap random cards
+- Shuffle & Deal (Epic) — others shuffle and redraw
+- Card Tornado (Legendary) — all players' cards pooled and redistributed
+- High Stakes (Rare) — gamble to steal/lose stats vs others
+- Stat Leech (Epic) — siphon better stats from other players
+- Copycat (Legendary) — clone any card for entire hand
+
+**Custom Projectile Cards (2):**
+- Angry Birds (Epic) — homing bird projectiles with swooping arcs
+- Squid Ink (Epic) — homing squids with sinusoidal swim + ink cloud slow
+
+**On-Block/On-Hit Spawner Cards (3):**
+- Nacho Block (Uncommon) — spawn nachos on block (heal allies, damage enemies)
+- Lemon Drop (Rare) — blinding lemon zones on hit/bounce
+- Tortilla Shield (Rare) — invulnerable wrap on block (3s, immobile)
+
+### Added — New Effects (18)
+- RadialShotEffect — distributes bullets at equal angles (360/count)
+- ScreenBounceEffect — bounces bullets off camera viewport edges
+- ClipDumpEffect — forces rapid-fire entire clip on trigger
+- SlowOnHitEffect — applies slow debuff on hit (mint green visual)
+- FeatherfallBounceEffect — reduces gravity per bounce
+- ChaosRicochetEffect — swaps damage/speed on bounce
+- VortexBounceEffect — pulls enemies toward bounce point
+- ShockwaveBounceEffect — pushes enemies away from bounce point
+- IceRicochetEffect — slows enemies near bounce point
+- ScorchingBounceEffect — burns near bounce (escalates per bounce)
+- BounceRandomSizeEffect — random size change + speed up on bounce
+- TeleportToBulletEffect — teleports owner to bullet hit location
+- SnakeRainEffect + SnakeHomingBehaviour — wavy homing snakes
+- HomingBirdEffect + BirdHomingBehaviour — swooping homing birds
+- HomingSquidEffect + SquidHomingBehaviour — swimming squids with ink clouds
+- NachosOnBlockEffect + NachoProjectile — radial nacho burst on block
+- TortillaWrapEffect — invulnerable carb shell on block
+- LemonDropEffect — blinding lemon zones on hit/bounce
+
+### Added — Inert Placeholders (8)
+- New Hand Used, All-In-One Used, Card Thief Used, Shuffle & Deal Used, Card Tornado Used, High Stakes Used, Stat Leech Used, Copycat Used
+
+### Changed
+- BrotherlyLove dangerous cards set expanded to include all new manipulation cards
+- BrotherlyLove dangerousCards/replacements made public static for extensibility
+
 ## [2.2.0] - 2026-03-02
 
 ### Fixed — Playtest Issues (#9–#17)

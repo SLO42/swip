@@ -39,13 +39,7 @@ namespace SWIP.Effects
                     {
                         bounceCooldown = 0.15f;
 
-                        var expObj = new GameObject("BounceExplosion");
-                        expObj.transform.position = transform.position;
-                        var exp = expObj.AddComponent<Explosion>();
-                        exp.auto = true;
-                        exp.damage = explosionDamage;
-                        exp.range = explosionRange;
-                        exp.force = explosionForce;
+                        SWIPExplosion.Spawn(transform.position, explosionDamage, explosionRange, explosionForce);
                     }
                 }
 

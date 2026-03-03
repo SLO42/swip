@@ -20,14 +20,7 @@ namespace SWIP.Effects
 
         private void Explode()
         {
-            // Spawn on separate GO so it survives projectile destruction
-            var expObj = new GameObject("BulletExplosion");
-            expObj.transform.position = transform.position;
-            var exp = expObj.AddComponent<Explosion>();
-            exp.auto = true;
-            exp.damage = explosionDamage;
-            exp.range = explosionRange;
-            exp.force = explosionForce;
+            SWIPExplosion.Spawn(transform.position, explosionDamage, explosionRange, explosionForce);
         }
     }
 

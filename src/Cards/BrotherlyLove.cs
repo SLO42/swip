@@ -8,6 +8,19 @@ namespace SWIP.Cards
 {
     public class BrotherlyLove : CustomCard
     {
+        // Cards that re-trigger dangerous effects when re-added via swap
+        private static readonly HashSet<string> dangerousCards = new HashSet<string>
+        {
+            "Mom Said It's My Turn",
+            "Brotherly Love"
+        };
+
+        private static readonly Dictionary<string, string> replacements = new Dictionary<string, string>
+        {
+            { "Mom Said It's My Turn", "Yay It's My Turn!" },
+            { "Brotherly Love", "Sharing is Caring" }
+        };
+
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
             cardInfo.allowMultiple = false;
@@ -21,7 +34,22 @@ namespace SWIP.Cards
             List<List<CardInfo>> allCards = new List<List<CardInfo>>();
             foreach (var p in players)
             {
-                allCards.Add(new List<CardInfo>(p.data.currentCards));
+                // Replace dangerous cards with inert versions
+                var cards = new List<CardInfo>();
+                foreach (var card in p.data.currentCards)
+                {
+                    if (dangerousCards.Contains(card.cardName) &&
+                        replacements.TryGetValue(card.cardName, out var replaceName))
+                    {
+                        var replacement = CardRegistry.Get(replaceName);
+                        cards.Add(replacement ?? card);
+                    }
+                    else
+                    {
+                        cards.Add(card);
+                    }
+                }
+                allCards.Add(cards);
             }
 
             foreach (var p in players)

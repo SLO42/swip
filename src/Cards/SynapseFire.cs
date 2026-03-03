@@ -1,5 +1,6 @@
 using UnboundLib.Cards;
 using UnityEngine;
+using SWIP.Effects;
 
 namespace SWIP.Cards
 {
@@ -11,10 +12,13 @@ namespace SWIP.Cards
 
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            gun.waveMovement = true;
             gun.spread *= 1.8f;
             gun.numberOfProjectiles += 2;
             gun.attackSpeed *= 0.82f;
+
+            var wave = player.gameObject.AddComponent<WaveMotionSpawner>();
+            wave.waveAmplitude = 5f;
+            wave.waveFrequency = 4f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -22,6 +26,9 @@ namespace SWIP.Cards
             gun.spread /= 1.8f;
             gun.numberOfProjectiles -= 2;
             gun.attackSpeed /= 0.82f;
+
+            var wave = player.gameObject.GetComponent<WaveMotionSpawner>();
+            if (wave != null) Object.Destroy(wave);
         }
 
         protected override string GetTitle() => "Synapse Fire";

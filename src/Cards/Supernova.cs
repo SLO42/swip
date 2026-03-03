@@ -3,6 +3,7 @@ using System.Linq;
 using UnboundLib.Cards;
 using UnityEngine;
 using RarityLib.Utils;
+using SWIP.Effects;
 
 namespace SWIP.Cards
 {
@@ -104,14 +105,7 @@ namespace SWIP.Cards
                 float explosionDamage = 200f;
                 float explosionForce = 5000f;
 
-                // Create explosion
-                var explosionObj = new GameObject("SupernovaExplosion");
-                explosionObj.transform.position = position;
-                var explosion = explosionObj.AddComponent<Explosion>();
-                explosion.damage = explosionDamage;
-                explosion.range = explosionRange;
-                explosion.force = explosionForce;
-                explosion.auto = true;
+                SWIPExplosion.Spawn(position, explosionDamage, explosionRange, explosionForce);
 
                 // Apply burn to all players in radius
                 List<Player> allPlayers = PlayerManager.instance.players;

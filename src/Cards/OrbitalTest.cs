@@ -4,7 +4,7 @@ using SWIP.Effects;
 
 namespace SWIP.Cards
 {
-    public class SatelliteUplink : CustomCard
+    public class OrbitalTest : CustomCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
@@ -12,39 +12,41 @@ namespace SWIP.Cards
 
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            block.additionalBlocks += 1;
-            data.maxHealth *= 0.75f;
+            // Holy beam on bullet hit
+            var smite = player.gameObject.AddComponent<SmiteBeamSpawner>();
+            smite.beamDamage = 40f;
+            smite.beamWidth = 1.2f;
 
+            // Satellite laser on block
             var laser = player.gameObject.AddComponent<SatelliteLaserEffect>();
-            laser.laserDamage = 70f;
-            laser.laserWidth = 1.8f;
+            laser.laserDamage = 50f;
+            laser.laserWidth = 0.6f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            block.additionalBlocks -= 1;
-            data.maxHealth /= 0.75f;
+            var smite = player.gameObject.GetComponent<SmiteBeamSpawner>();
+            if (smite != null) Object.Destroy(smite);
 
             var laser = player.gameObject.GetComponent<SatelliteLaserEffect>();
             if (laser != null) Object.Destroy(laser);
         }
 
-        protected override string GetTitle() => "Satellite Uplink";
-        protected override string GetDescription() => "Requesting orbital support.";
+        protected override string GetTitle() => "Orbital Test";
+        protected override string GetDescription() => "DEBUG: Beam on hit + laser on block.";
 
         protected override CardInfoStat[] GetStats()
         {
             return new CardInfoStat[]
             {
-                new CardInfoStat { positive = true, stat = "Laser Strike", amount = "On Block", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
-                new CardInfoStat { positive = true, stat = "Blocks", amount = "+1", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
-                new CardInfoStat { positive = false, stat = "HP", amount = "-25%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
+                new CardInfoStat { positive = true, stat = "Strike", amount = "On Hit", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
+                new CardInfoStat { positive = true, stat = "Strike", amount = "On Block", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
             };
         }
 
-        protected override CardInfo.Rarity GetRarity() => CardInfo.Rarity.Rare;
+        protected override CardInfo.Rarity GetRarity() => CardInfo.Rarity.Common;
         protected override GameObject GetCardArt() => null;
-        protected override CardThemeColor.CardThemeColorType GetTheme() => CardThemeColor.CardThemeColorType.TechWhite;
+        protected override CardThemeColor.CardThemeColorType GetTheme() => CardThemeColor.CardThemeColorType.DestructiveRed;
         public override string GetModName() => "SWIP";
     }
 }

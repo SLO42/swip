@@ -15,10 +15,9 @@ namespace SWIP.Cards
             block.healing += 30f;
             characterStats.movementSpeed *= 0.7f;
 
-            var spawner = player.gameObject.AddComponent<SmiteOnHitSpawner>();
-            spawner.explosionCount = 3;
-            spawner.explosionDamage = 45f;
-            spawner.explosionRange = 3.5f;
+            var spawner = player.gameObject.AddComponent<SmiteBeamSpawner>();
+            spawner.beamDamage = 55f;
+            spawner.beamWidth = 1.5f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -26,7 +25,7 @@ namespace SWIP.Cards
             block.healing -= 30f;
             characterStats.movementSpeed /= 0.7f;
 
-            var spawner = player.gameObject.GetComponent<SmiteOnHitSpawner>();
+            var spawner = player.gameObject.GetComponent<SmiteBeamSpawner>();
             if (spawner != null) Object.Destroy(spawner);
         }
 
@@ -37,7 +36,7 @@ namespace SWIP.Cards
         {
             return new CardInfoStat[]
             {
-                new CardInfoStat { positive = true, stat = "Smite", amount = "3x45dmg on hit", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
+                new CardInfoStat { positive = true, stat = "Holy Beam", amount = "On Hit", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
                 new CardInfoStat { positive = true, stat = "Block Heal", amount = "+30", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
                 new CardInfoStat { positive = false, stat = "Speed", amount = "-30%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
             };

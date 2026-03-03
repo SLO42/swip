@@ -66,50 +66,46 @@ namespace SWIP.Effects
     }
 
     /// <summary>
-    /// Lives on the projectile. Destroys terrain on bullet death.
+    /// Lives on the projectile. On hit: destroys only the specific object hit
+    /// (not everything in a radius) and spawns an explosion for visual + knockback.
     /// </summary>
     public class TerrainBreakerEffect : MonoBehaviour
     {
         public float breakRadius = 3f;
         public float breakDamage = 1000f;
 
-        private bool triggered;
-
-        void OnDestroy()
+        void Start()
         {
-            if (!triggered)
+            var projectileHit = GetComponentInParent<ProjectileHit>();
+            if (projectileHit == null) projectileHit = GetComponent<ProjectileHit>();
+            if (projectileHit != null)
             {
-                BreakTerrain();
+                projectileHit.AddHitActionWithData(OnHitWithData);
             }
         }
 
-        private void BreakTerrain()
+        private void OnHitWithData(HitInfo hitInfo)
         {
-            triggered = true;
             Vector3 pos = transform.position;
 
-            var expObj = new GameObject("TerrainExplosion");
-            expObj.transform.position = pos;
-            var exp = expObj.AddComponent<Explosion>();
-            exp.auto = true;
-            exp.damage = breakDamage;
-            exp.range = breakRadius;
-            exp.force = 2000f;
+            // Visual explosion + knockback
+            SWIPExplosion.Spawn(pos, breakDamage, breakRadius, 2000f);
 
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, breakRadius);
-            foreach (var col in colliders)
+            // Destroy only the specific object that was hit
+            if (hitInfo.collider != null)
             {
-                if (col == null) continue;
-                if (col.GetComponentInParent<Player>() != null) continue;
-                if (col.GetComponentInParent<ProjectileHit>() != null) continue;
-
-                var damagable = col.GetComponent<Damagable>();
-                if (damagable != null)
+                var hitObj = hitInfo.collider.gameObject;
+                if (hitObj.GetComponentInParent<Player>() == null &&
+                    hitObj.GetComponentInParent<ProjectileHit>() == null)
                 {
-                    damagable.CallTakeDamage(Vector2.up * breakDamage, pos);
-                }
+                    var damagable = hitObj.GetComponent<Damagable>();
+                    if (damagable != null)
+                    {
+                        damagable.CallTakeDamage(Vector2.up * breakDamage, pos);
+                    }
 
-                Object.Destroy(col.gameObject);
+                    Object.Destroy(hitObj);
+                }
             }
         }
     }

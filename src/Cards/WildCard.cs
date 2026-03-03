@@ -1,6 +1,5 @@
 using UnboundLib.Cards;
 using UnityEngine;
-using SWIP.Effects;
 
 namespace SWIP.Cards
 {
@@ -12,17 +11,14 @@ namespace SWIP.Cards
 
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            var sideShoot = player.gameObject.AddComponent<SideshootEffect>();
-            sideShoot.angleRange = 60f;
+            gun.numberOfProjectiles += 1;
+            gun.spread += 0.3f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            var sideShoot = player.gameObject.GetComponent<SideshootEffect>();
-            if (sideShoot != null)
-            {
-                Object.Destroy(sideShoot);
-            }
+            gun.numberOfProjectiles -= 1;
+            gun.spread -= 0.3f;
         }
 
         protected override string GetTitle() => "Wild Card";
@@ -32,7 +28,8 @@ namespace SWIP.Cards
         {
             return new CardInfoStat[]
             {
-                new CardInfoStat { positive = true, stat = "Random Shot Angle", amount = "\u00b160\u00b0", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
+                new CardInfoStat { positive = true, stat = "Bullets", amount = "+1", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
+                new CardInfoStat { positive = true, stat = "Spread", amount = "+30%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
             };
         }
 

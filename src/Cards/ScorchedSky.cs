@@ -15,13 +15,13 @@ namespace SWIP.Cards
             gun.damage *= 1.3f;
             characterStats.movementSpeed *= 0.8f;
 
-            // Orbital strike that triggers via shoot action (simulating "on kill" by firing on each shot)
-            var orbital = player.gameObject.AddComponent<OrbitalStrikeEffect>();
-            orbital.explosionCount = 2;
-            orbital.explosionDamage = 40f;
-            orbital.explosionRange = 3.5f;
-            orbital.triggerOnBlock = true;
-            orbital.triggerOnKill = true;
+            var sky = player.gameObject.AddComponent<ScorchedSkySpawner>();
+            sky.projectileCount = 5;
+            sky.spreadWidth = 6f;
+            sky.fallSpeed = 40f;
+            sky.projectileDamage = 25f;
+            sky.explosionRange = 2f;
+            sky.explosionForce = 1500f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -29,8 +29,8 @@ namespace SWIP.Cards
             gun.damage /= 1.3f;
             characterStats.movementSpeed /= 0.8f;
 
-            var orbital = player.gameObject.GetComponent<OrbitalStrikeEffect>();
-            if (orbital != null) Object.Destroy(orbital);
+            var sky = player.gameObject.GetComponent<ScorchedSkySpawner>();
+            if (sky != null) Object.Destroy(sky);
         }
 
         protected override string GetTitle() => "Scorched Sky";
@@ -40,7 +40,7 @@ namespace SWIP.Cards
         {
             return new CardInfoStat[]
             {
-                new CardInfoStat { positive = true, stat = "Orbital Strike", amount = "On Block", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
+                new CardInfoStat { positive = true, stat = "Sky Rain", amount = "5 On Hit", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
                 new CardInfoStat { positive = true, stat = "Damage", amount = "+30%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
                 new CardInfoStat { positive = false, stat = "Speed", amount = "-20%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
             };

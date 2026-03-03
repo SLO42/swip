@@ -12,32 +12,28 @@ namespace SWIP.Cards
 
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            // Orbital strike on bullet hit via SmiteOnHitSpawner
-            var smite = player.gameObject.AddComponent<SmiteOnHitSpawner>();
-            smite.explosionCount = 3;
-            smite.explosionDamage = 40f;
-            smite.explosionRange = 3f;
-            smite.delayBetween = 0.15f;
+            // Holy beam on bullet hit
+            var smite = player.gameObject.AddComponent<SmiteBeamSpawner>();
+            smite.beamDamage = 40f;
+            smite.beamWidth = 1.2f;
 
-            // Also trigger orbital strike on block
-            var orbital = player.gameObject.AddComponent<OrbitalStrikeEffect>();
-            orbital.explosionCount = 2;
-            orbital.explosionDamage = 35f;
-            orbital.explosionRange = 3f;
-            orbital.triggerOnBlock = true;
+            // Satellite laser on block
+            var laser = player.gameObject.AddComponent<SatelliteLaserEffect>();
+            laser.laserDamage = 50f;
+            laser.laserWidth = 0.6f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            var smite = player.gameObject.GetComponent<SmiteOnHitSpawner>();
+            var smite = player.gameObject.GetComponent<SmiteBeamSpawner>();
             if (smite != null) Object.Destroy(smite);
 
-            var orbital = player.gameObject.GetComponent<OrbitalStrikeEffect>();
-            if (orbital != null) Object.Destroy(orbital);
+            var laser = player.gameObject.GetComponent<SatelliteLaserEffect>();
+            if (laser != null) Object.Destroy(laser);
         }
 
         protected override string GetTitle() => "Orbital Test";
-        protected override string GetDescription() => "DEBUG: Strike on hit + block.";
+        protected override string GetDescription() => "DEBUG: Beam on hit + laser on block.";
 
         protected override CardInfoStat[] GetStats()
         {

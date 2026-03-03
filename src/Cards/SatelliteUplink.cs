@@ -15,11 +15,9 @@ namespace SWIP.Cards
             block.additionalBlocks += 1;
             data.maxHealth *= 0.75f;
 
-            var orbital = player.gameObject.AddComponent<OrbitalStrikeEffect>();
-            orbital.explosionCount = 3;
-            orbital.explosionDamage = 55f;
-            orbital.explosionRange = 4f;
-            orbital.triggerOnBlock = true;
+            var laser = player.gameObject.AddComponent<SatelliteLaserEffect>();
+            laser.laserDamage = 70f;
+            laser.laserWidth = 1.8f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -27,8 +25,8 @@ namespace SWIP.Cards
             block.additionalBlocks -= 1;
             data.maxHealth /= 0.75f;
 
-            var orbital = player.gameObject.GetComponent<OrbitalStrikeEffect>();
-            if (orbital != null) Object.Destroy(orbital);
+            var laser = player.gameObject.GetComponent<SatelliteLaserEffect>();
+            if (laser != null) Object.Destroy(laser);
         }
 
         protected override string GetTitle() => "Satellite Uplink";
@@ -38,7 +36,7 @@ namespace SWIP.Cards
         {
             return new CardInfoStat[]
             {
-                new CardInfoStat { positive = true, stat = "Orbital Strike", amount = "On Block", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
+                new CardInfoStat { positive = true, stat = "Laser Strike", amount = "On Block", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
                 new CardInfoStat { positive = true, stat = "Blocks", amount = "+1", simepleAmount = CardInfoStat.SimpleAmount.notAssigned },
                 new CardInfoStat { positive = false, stat = "HP", amount = "-25%", simepleAmount = CardInfoStat.SimpleAmount.notAssigned }
             };

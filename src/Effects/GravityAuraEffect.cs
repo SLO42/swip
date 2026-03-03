@@ -5,7 +5,7 @@ namespace SWIP.Effects
     public class GravityAuraEffect : MonoBehaviour
     {
         public float radius = 15f;
-        public float strength = 30f;
+        public float strength = 8f;
 
         private Player owner;
         private LineRenderer auraVisual;
@@ -84,12 +84,10 @@ namespace SWIP.Effects
                 float pullAccel = strength * (1f - dist / radius);
                 Vector2 pullDir = diff.normalized;
 
-                // Directly modify velocity — bypasses mass and movement controller resistance
-                var rb = target.GetComponent<Rigidbody2D>();
-                if (rb != null)
-                {
-                    rb.velocity += pullDir * pullAccel * Time.fixedDeltaTime;
-                }
+                // Direct position pull — AddForce and velocity changes get overridden
+                // by the game's PlayerVelocity movement controller every frame
+                float pullSpeed = strength * (1f - dist / radius) * Time.fixedDeltaTime;
+                target.transform.position += (Vector3)(pullDir * pullSpeed);
             }
         }
 

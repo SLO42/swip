@@ -6,7 +6,7 @@ namespace SWIP.Effects
     {
         public int missileCount = 3;
         public float missileDamage = 25f;
-        public float missileSpeed = 15f;
+        public float missileSpeed = 20f;
         public float missileLifetime = 5f;
         public float explosionRange = 2.5f;
         public float explosionForce = 1500f;
@@ -14,6 +14,7 @@ namespace SWIP.Effects
         private Gun gun;
         private Player player;
         private bool hooked;
+        private int lastShotFrame = -1;
 
         void Start()
         {
@@ -56,6 +57,11 @@ namespace SWIP.Effects
         {
             if (player == null) return;
 
+            // Only spawn missiles once per shot, not once per bullet
+            int frame = Time.frameCount;
+            if (frame == lastShotFrame) return;
+            lastShotFrame = frame;
+
             for (int i = 0; i < missileCount; i++)
             {
                 var missileObj = new GameObject("Missile");
@@ -74,18 +80,32 @@ namespace SWIP.Effects
                 col.radius = 0.15f;
                 col.isTrigger = true;
 
-                // Visual: small line as missile body
+                // Visual: missile body (bright tip)
                 var lr = missileObj.AddComponent<LineRenderer>();
                 lr.useWorldSpace = false;
-                lr.startWidth = 0.15f;
-                lr.endWidth = 0.05f;
+                lr.startWidth = 0.12f;
+                lr.endWidth = 0.04f;
                 lr.positionCount = 2;
                 lr.SetPosition(0, Vector3.zero);
-                lr.SetPosition(1, new Vector3(0f, -0.4f, 0f));
+                lr.SetPosition(1, new Vector3(0f, -0.3f, 0f));
                 lr.material = new Material(Shader.Find("Sprites/Default"));
-                lr.startColor = new Color(1f, 0.6f, 0.1f, 1f);
-                lr.endColor = new Color(1f, 0.2f, 0f, 0.6f);
+                lr.startColor = new Color(1f, 0.9f, 0.7f, 1f);
+                lr.endColor = new Color(1f, 0.5f, 0.1f, 0.9f);
                 lr.sortingOrder = 5;
+
+                // Exhaust trail (child GO with its own LineRenderer tracking positions)
+                var trailObj = new GameObject("Exhaust");
+                trailObj.transform.SetParent(missileObj.transform);
+                trailObj.transform.localPosition = Vector3.zero;
+                var trail = trailObj.AddComponent<TrailRenderer>();
+                trail.time = 0.4f;
+                trail.startWidth = 0.12f;
+                trail.endWidth = 0f;
+                trail.material = new Material(Shader.Find("Sprites/Default"));
+                trail.startColor = new Color(1f, 0.4f, 0f, 0.7f);
+                trail.endColor = new Color(1f, 0.2f, 0f, 0f);
+                trail.sortingOrder = 4;
+                trail.minVertexDistance = 0.1f;
 
                 var homing = missileObj.AddComponent<MissileHomingBehaviour>();
                 homing.owner = player;
@@ -171,14 +191,20 @@ namespace SWIP.Effects
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (graceTimer > 0f) return;
-
-            // Ignore other missiles
+            // Always ignore other missiles
             if (other.GetComponent<MissileHomingBehaviour>() != null) return;
 
-            // Ignore owner
+            // Always ignore owner's team
             var player = other.GetComponentInParent<Player>();
             if (player != null && owner != null && player.teamID == owner.teamID) return;
+
+            // During grace period, only skip owner's bullets — still hit everything else
+            if (graceTimer > 0f)
+            {
+                var projHit = other.GetComponent<ProjectileHit>();
+                if (projHit == null) projHit = other.GetComponentInParent<ProjectileHit>();
+                if (projHit != null) return;
+            }
 
             Explode();
         }
@@ -190,14 +216,7 @@ namespace SWIP.Effects
 
             Vector3 pos = transform.position;
 
-            // Spawn explosion on a separate GO so it survives missile destruction
-            var expObj = new GameObject("MissileExplosion");
-            expObj.transform.position = pos;
-            var exp = expObj.AddComponent<Explosion>();
-            exp.auto = true;
-            exp.damage = damage;
-            exp.range = explosionRange;
-            exp.force = explosionForce;
+            SWIPExplosion.Spawn(pos, damage, explosionRange, explosionForce, owner, SWIPExplosion.MissileColors);
 
             // Spawn cloud/gas zones from the owner's cloud effect cards (stacks)
             if (owner != null)

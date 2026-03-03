@@ -180,6 +180,10 @@ namespace SWIP
             CustomCard.BuildCard<Nullifier>(ci => CardRegistry.Register("Nullifier", ci));
             CustomCard.BuildCard<TheFinalBoss>(ci => CardRegistry.Register("The Final Boss", ci));
 
+            // === Inert Replacement Cards (for card-swap safety) ===
+            CustomCard.BuildCard<YayMyTurn>(ci => CardRegistry.Register("Yay It's My Turn!", ci));
+            CustomCard.BuildCard<SharingIsCaring>(ci => CardRegistry.Register("Sharing is Caring", ci));
+
             // === Debug/Test Cards ===
             CustomCard.BuildCard<OrbitalTest>(ci => CardRegistry.Register("Orbital Test", ci));
 

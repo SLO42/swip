@@ -14,7 +14,7 @@ namespace SWIP.Cards
         {
             var aura = player.gameObject.AddComponent<GravityAuraEffect>();
             aura.radius = 15f;
-            aura.strength = 30f;
+            aura.strength = 8f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)

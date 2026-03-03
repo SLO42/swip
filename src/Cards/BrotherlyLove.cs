@@ -9,16 +9,32 @@ namespace SWIP.Cards
     public class BrotherlyLove : CustomCard
     {
         // Cards that re-trigger dangerous effects when re-added via swap
-        private static readonly HashSet<string> dangerousCards = new HashSet<string>
+        public static readonly HashSet<string> dangerousCards = new HashSet<string>
         {
             "Mom Said It's My Turn",
-            "Brotherly Love"
+            "Brotherly Love",
+            "New Hand",
+            "All-In-One",
+            "Card Thief",
+            "Shuffle & Deal",
+            "Card Tornado",
+            "High Stakes",
+            "Stat Leech",
+            "Copycat"
         };
 
-        private static readonly Dictionary<string, string> replacements = new Dictionary<string, string>
+        public static readonly Dictionary<string, string> replacements = new Dictionary<string, string>
         {
             { "Mom Said It's My Turn", "Yay It's My Turn!" },
-            { "Brotherly Love", "Sharing is Caring" }
+            { "Brotherly Love", "Sharing is Caring" },
+            { "New Hand", "New Hand Used" },
+            { "All-In-One", "All-In-One Used" },
+            { "Card Thief", "Card Thief Used" },
+            { "Shuffle & Deal", "Shuffle & Deal Used" },
+            { "Card Tornado", "Card Tornado Used" },
+            { "High Stakes", "High Stakes Used" },
+            { "Stat Leech", "Stat Leech Used" },
+            { "Copycat", "Copycat Used" }
         };
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)

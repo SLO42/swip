@@ -180,9 +180,88 @@ namespace SWIP
             CustomCard.BuildCard<Nullifier>(ci => CardRegistry.Register("Nullifier", ci));
             CustomCard.BuildCard<TheFinalBoss>(ci => CardRegistry.Register("The Final Boss", ci));
 
+            // === Radial Shot + Bullet Adders ===
+            CustomCard.BuildCard<RadialSpread>(ci => CardRegistry.Register("Radial Spread", ci));
+            CustomCard.BuildCard<BulletStorm>(ci => CardRegistry.Register("Bullet Storm", ci));
+            CustomCard.BuildCard<BulletHail>(ci => CardRegistry.Register("Bullet Hail", ci));
+            CustomCard.BuildCard<BulletFlood>(ci => CardRegistry.Register("Bullet Flood", ci));
+
+            // === Clip Dump ===
+            CustomCard.BuildCard<ClipDump>(ci => CardRegistry.Register("Clip Dump", ci));
+            CustomCard.BuildCard<ClipPurge>(ci => CardRegistry.Register("Clip Purge", ci));
+            CustomCard.BuildCard<ClipApocalypse>(ci => CardRegistry.Register("Clip Apocalypse", ci));
+
+            // === Slow Cards ===
+            CustomCard.BuildCard<SlowDrip>(ci => CardRegistry.Register("Slow Drip", ci));
+            CustomCard.BuildCard<SlowPour>(ci => CardRegistry.Register("Slow Pour", ci));
+            CustomCard.BuildCard<SlowTide>(ci => CardRegistry.Register("Slow Tide", ci));
+
+            // === Bounce Count Cards ===
+            CustomCard.BuildCard<BounceX2>(ci => CardRegistry.Register("Bounce x2", ci));
+            CustomCard.BuildCard<BounceX5>(ci => CardRegistry.Register("Bounce x5", ci));
+            CustomCard.BuildCard<BounceX10>(ci => CardRegistry.Register("Bounce x10", ci));
+            CustomCard.BuildCard<BounceX25>(ci => CardRegistry.Register("Bounce x25", ci));
+            CustomCard.BuildCard<BounceX50>(ci => CardRegistry.Register("Bounce x50", ci));
+            CustomCard.BuildCard<BounceX100>(ci => CardRegistry.Register("Bounce x100", ci));
+
+            // === Bounce Modifier Cards ===
+            CustomCard.BuildCard<RicochetRoulette>(ci => CardRegistry.Register("Ricochet Roulette", ci));
+            CustomCard.BuildCard<Featherfall>(ci => CardRegistry.Register("Featherfall", ci));
+            CustomCard.BuildCard<ChaosRicochet>(ci => CardRegistry.Register("Chaos Ricochet", ci));
+            CustomCard.BuildCard<VortexBounce>(ci => CardRegistry.Register("Vortex Bounce", ci));
+            CustomCard.BuildCard<ShockwaveBounce>(ci => CardRegistry.Register("Shockwave Bounce", ci));
+            CustomCard.BuildCard<IceRicochet>(ci => CardRegistry.Register("Ice Ricochet", ci));
+            CustomCard.BuildCard<ScorchingBounce>(ci => CardRegistry.Register("Scorching Bounce", ci));
+
+            // === Stat Boost Cards ===
+            CustomCard.BuildCard<WideSpread>(ci => CardRegistry.Register("Wide Spread", ci));
+            CustomCard.BuildCard<BulletSpeedPlus>(ci => CardRegistry.Register("Bullet Speed+", ci));
+            CustomCard.BuildCard<RapidFire>(ci => CardRegistry.Register("Rapid Fire", ci));
+
+            // === Ammo/Reload Cards ===
+            CustomCard.BuildCard<InfiniteAmmo>(ci => CardRegistry.Register("Infinite Ammo", ci));
+            CustomCard.BuildCard<QuickDraw>(ci => CardRegistry.Register("Quick Draw", ci));
+
+            // === Unique Mechanic Cards ===
+            CustomCard.BuildCard<BulletWarp>(ci => CardRegistry.Register("Bullet Warp", ci));
+            CustomCard.BuildCard<SnakeRain>(ci => CardRegistry.Register("Snake Rain", ci));
+            CustomCard.BuildCard<SpeedDemon>(ci => CardRegistry.Register("Speed Demon", ci));
+            CustomCard.BuildCard<ChaosStats>(ci => CardRegistry.Register("Chaos Stats", ci));
+            CustomCard.BuildCard<RisingTide>(ci => CardRegistry.Register("Rising Tide", ci));
+            CustomCard.BuildCard<DoubleDown>(ci => CardRegistry.Register("Double Down", ci));
+            CustomCard.BuildCard<AllIn>(ci => CardRegistry.Register("All In", ci));
+            CustomCard.BuildCard<EffectAmplifier>(ci => CardRegistry.Register("Effect Amplifier", ci));
+
+            // === Card Manipulation Cards ===
+            CustomCard.BuildCard<NewHand>(ci => CardRegistry.Register("New Hand", ci));
+            CustomCard.BuildCard<AllInOne>(ci => CardRegistry.Register("All-In-One", ci));
+            CustomCard.BuildCard<CardThief>(ci => CardRegistry.Register("Card Thief", ci));
+            CustomCard.BuildCard<ShuffleAndDeal>(ci => CardRegistry.Register("Shuffle & Deal", ci));
+            CustomCard.BuildCard<CardTornado>(ci => CardRegistry.Register("Card Tornado", ci));
+            CustomCard.BuildCard<HighStakes>(ci => CardRegistry.Register("High Stakes", ci));
+            CustomCard.BuildCard<StatLeech>(ci => CardRegistry.Register("Stat Leech", ci));
+            CustomCard.BuildCard<Copycat>(ci => CardRegistry.Register("Copycat", ci));
+
+            // === Custom Projectile Cards ===
+            CustomCard.BuildCard<AngryBirds>(ci => CardRegistry.Register("Angry Birds", ci));
+            CustomCard.BuildCard<SquidInk>(ci => CardRegistry.Register("Squid Ink", ci));
+
+            // === On-Block/On-Hit Spawner Cards ===
+            CustomCard.BuildCard<NachoBlock>(ci => CardRegistry.Register("Nacho Block", ci));
+            CustomCard.BuildCard<LemonDrop>(ci => CardRegistry.Register("Lemon Drop", ci));
+            CustomCard.BuildCard<TortillaShield>(ci => CardRegistry.Register("Tortilla Shield", ci));
+
             // === Inert Replacement Cards (for card-swap safety) ===
             CustomCard.BuildCard<YayMyTurn>(ci => CardRegistry.Register("Yay It's My Turn!", ci));
             CustomCard.BuildCard<SharingIsCaring>(ci => CardRegistry.Register("Sharing is Caring", ci));
+            CustomCard.BuildCard<NewHandPlaceholder>(ci => CardRegistry.Register("New Hand Used", ci));
+            CustomCard.BuildCard<AllInOnePlaceholder>(ci => CardRegistry.Register("All-In-One Used", ci));
+            CustomCard.BuildCard<CardThiefPlaceholder>(ci => CardRegistry.Register("Card Thief Used", ci));
+            CustomCard.BuildCard<ShuffleDealPlaceholder>(ci => CardRegistry.Register("Shuffle & Deal Used", ci));
+            CustomCard.BuildCard<CardTornadoPlaceholder>(ci => CardRegistry.Register("Card Tornado Used", ci));
+            CustomCard.BuildCard<HighStakesPlaceholder>(ci => CardRegistry.Register("High Stakes Used", ci));
+            CustomCard.BuildCard<StatLeechPlaceholder>(ci => CardRegistry.Register("Stat Leech Used", ci));
+            CustomCard.BuildCard<CopycatPlaceholder>(ci => CardRegistry.Register("Copycat Used", ci));
 
             // === Debug/Test Cards ===
             CustomCard.BuildCard<OrbitalTest>(ci => CardRegistry.Register("Orbital Test", ci));

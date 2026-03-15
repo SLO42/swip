@@ -76,3 +76,10 @@ jobs:
           body_path: release_notes.txt
           files: SWIP-${{ steps.version.outputs.version }}.zip
           generate_release_notes: false
+
+      - name: Publish to Thunderstore
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          npx tcli@latest publish \
+            --token "${{ secrets.THUNDERSTORE_TOKEN }}" \
+            --file "SWIP-${{ steps.version.outputs.version }}.zip"

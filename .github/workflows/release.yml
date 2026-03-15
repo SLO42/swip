@@ -73,6 +73,7 @@ jobs:
           version: ${{ steps.version.outputs.version }}
           description: "Sam's Wonderful Impressive Card Park - A custom card pack for ROUNDS"
           website: https://github.com/SLO42/swip
+          repo: https://thunderstore.io
           categories: |
             custom-cards
           deps: |
@@ -81,4 +82,4 @@ jobs:
             Pykess-ModdingUtils-0.4.8
             Root-RarityLib-1.3.0
             Root-Classes_Manager_Reborn-1.5.5
-          file: SWIP-${{ steps.version.outputs.version }}.zip
+          path: thunderstore/

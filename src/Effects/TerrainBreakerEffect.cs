@@ -91,11 +91,13 @@ namespace SWIP.Effects
             // Visual explosion + knockback
             SWIPExplosion.Spawn(pos, breakDamage, breakRadius, 2000f);
 
-            // Destroy only the specific object that was hit
+            // Destroy only the specific object that was hit (terrain/props only)
             if (hitInfo.collider != null)
             {
                 var hitObj = hitInfo.collider.gameObject;
-                if (hitObj.GetComponentInParent<Player>() == null &&
+                var root = hitObj.transform.root.gameObject;
+                if (root.GetComponentInChildren<Player>() == null &&
+                    hitObj.GetComponentInParent<Player>() == null &&
                     hitObj.GetComponentInParent<ProjectileHit>() == null)
                 {
                     var damagable = hitObj.GetComponent<Damagable>();

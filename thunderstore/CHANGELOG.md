@@ -2,6 +2,11 @@
 
 All notable changes to SWIP (Sam's Wonderful Impressive Card Park) will be documented in this file.
 
+## [2.3.2] - 2026-03-15
+
+### Fixed
+- **#23 Scorched Earth deleting players** — added root-hierarchy player check to TerrainBreakerEffect so direct hits on players no longer destroy the player object
+
 ## [2.3.1] - 2026-03-15
 
 ### Removed

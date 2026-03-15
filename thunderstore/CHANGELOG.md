@@ -2,6 +2,15 @@
 
 All notable changes to SWIP (Sam's Wonderful Impressive Card Park) will be documented in this file.
 
+## [2.3.1] - 2026-03-15
+
+### Removed
+- **Carpet Bomb** card and registration
+- **Drone Swarm** card and registration
+- **Scorched Sky** card, registration, and ScorchedSkyEffect
+- **MissileBarrageEffect** — missile homing/spawning effect
+- Missile/sky projectile chain-explosion guards from SWIPExplosion (no longer needed)
+
 ## [2.3.0] - 2026-03-03
 
 ### Added — Silly/Chaos Card Pack (~50 new unclassed cards)

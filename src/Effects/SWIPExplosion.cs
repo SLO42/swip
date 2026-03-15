@@ -17,10 +17,6 @@ namespace SWIP.Effects
             Collider2D[] hits = Physics2D.OverlapCircleAll(position, range);
             foreach (var hit in hits)
             {
-                // Skip our custom projectiles — don't let explosions chain-kill missiles/sky projectiles
-                if (hit.GetComponent<MissileHomingBehaviour>() != null) continue;
-                if (hit.GetComponent<SkyProjectileBehaviour>() != null) continue;
-
                 Vector2 dir = ((Vector2)hit.transform.position - (Vector2)position);
                 float dist = dir.magnitude;
                 if (dist < 0.1f) dist = 0.1f;

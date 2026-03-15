@@ -165,13 +165,10 @@ namespace SWIP
             CustomCard.BuildCard<WildCard>(ci => CardRegistry.Register("Wild Card", ci));
             CustomCard.BuildCard<Smite>(ci => CardRegistry.Register("Smite", ci));
             CustomCard.BuildCard<ComeHereBro>(ci => CardRegistry.Register("Come Here Bro", ci));
-            CustomCard.BuildCard<ScorchedSky>(ci => CardRegistry.Register("Scorched Sky", ci));
             CustomCard.BuildCard<MomSaidMyTurn>(ci => CardRegistry.Register("Mom Said My Turn", ci));
             CustomCard.BuildCard<BrotherlyLove>(ci => CardRegistry.Register("Brotherly Love", ci));
             CustomCard.BuildCard<DivineJudgment>(ci => CardRegistry.Register("Divine Judgment", ci));
-            CustomCard.BuildCard<CarpetBomb>(ci => CardRegistry.Register("Carpet Bomb", ci));
             CustomCard.BuildCard<SatelliteUplink>(ci => CardRegistry.Register("Satellite Uplink", ci));
-            CustomCard.BuildCard<DroneSwarm>(ci => CardRegistry.Register("Drone Swarm", ci));
             CustomCard.BuildCard<Underdog>(ci => CardRegistry.Register("Underdog", ci));
             CustomCard.BuildCard<MomentumCard>(ci => CardRegistry.Register("Momentum", ci));
             CustomCard.BuildCard<Berserker>(ci => CardRegistry.Register("Berserker", ci));

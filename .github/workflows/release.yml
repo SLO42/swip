@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 jobs:
@@ -24,18 +24,7 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Version: $VERSION"
 
-      - name: Check if release already exists
-        id: check
-        run: |
-          if git tag -l "v${{ steps.version.outputs.version }}" | grep -q .; then
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "Tag v${{ steps.version.outputs.version }} already exists — skipping."
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Verify DLL exists
-        if: steps.check.outputs.skip == 'false'
         run: |
           if [ ! -f thunderstore/SWIP.dll ]; then
             echo "ERROR: thunderstore/SWIP.dll not found. Run ./scripts/release.sh locally first."
@@ -43,7 +32,6 @@ jobs:
           fi
 
       - name: Package for Thunderstore
-        if: steps.check.outputs.skip == 'false'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           mkdir -p package
@@ -58,7 +46,6 @@ jobs:
           zip -r "../SWIP-${VERSION}.zip" .
 
       - name: Extract changelog for this version
-        if: steps.check.outputs.skip == 'false'
         id: changelog
         run: |
           VERSION="${{ steps.version.outputs.version }}"
@@ -68,8 +55,7 @@ jobs:
           fi
           echo "$NOTES" > release_notes.txt
 
-      - name: Create tag and GitHub Release
-        if: steps.check.outputs.skip == 'false'
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
@@ -78,7 +64,6 @@ jobs:
           generate_release_notes: false
 
       - name: Publish to Thunderstore
-        if: steps.check.outputs.skip == 'false'
         run: |
           npx tcli@latest publish \
             --token "${{ secrets.THUNDERSTORE_TOKEN }}" \

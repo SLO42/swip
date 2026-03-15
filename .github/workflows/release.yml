@@ -64,7 +64,18 @@ jobs:
           generate_release_notes: false
 
       - name: Publish to Thunderstore
-        run: |
-          npx tcli@latest publish \
-            --token "${{ secrets.THUNDERSTORE_TOKEN }}" \
-            --file "SWIP-${{ steps.version.outputs.version }}.zip"
+        uses: GreenTF/upload-thunderstore-package@v4
+        with:
+          token: ${{ secrets.THUNDERSTORE_TOKEN }}
+          community: rounds
+          namespace: BasicallyCoding
+          name: SWIP
+          version: ${{ steps.version.outputs.version }}
+          description: "Sam's Wonderful Impressive Card Park - A custom card pack for ROUNDS"
+          deps: |
+            BepInEx-BepInExPack_ROUNDS-5.4.1901
+            willis81808-UnboundLib-3.2.14
+            Pykess-ModdingUtils-0.4.8
+            Root-RarityLib-1.3.0
+            Root-Classes_Manager_Reborn-1.5.5
+          path: thunderstore/
